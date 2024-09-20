@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+        .result {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        .suggestions {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Face Recognition Result</h1>
+    <img src="{{ url_for('static', filename=image_path.split('/')[-1]) }}" alt="Uploaded Image">
+    <div class="result">
+        {% if most_similar_face %}
+            <p>Most Similar Face: {{ most_similar_face }}</p>
+        {% else %}
+            <p>No similar images found in the dataset.</p>
+        {% endif %}
+    </div>
+    <div class="suggestions">
+        <p>Suggestions:</p>
+        <ul>
+            <li>Ensure the dataset contains high-quality images of faces.</li>
+            <li>Try adjusting the similarity threshold in the Flask application.</li>
+            <li>Check if the uploaded image is clear and properly aligned.</li>
+            <li>Make sure that embeddings are correctly generated and stored.</li>
+        </ul>
+    </div>
+    <a href="{{ url_for('index') }}">Go Back</a>
+</body>
+</html>
