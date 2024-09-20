@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Processing</title>
+    <title>Face Authentication</title>
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <style>
         body {
-            font-family: 'Roboto', sans-serif; 
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,36 +18,14 @@
             height: 100vh;
             overflow-x: hidden;
             position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #c0c0c0, #4d2a7f);
-            background-size: 400% 400%;
-            animation: gradientAnimation 15s infinite;
-            z-index: -1;
-        }
-
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            background: url("main_bg.jpg");
+            background-size: cover;
         }
 
         h1 {
             color: #000;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Roboto';
+            font-size: 24pt;
         }
 
         .form-container {
@@ -105,28 +84,47 @@
         button:hover {
             background-color: #45a049;
         }
+
+        video {
+            width: 320px;
+            height: 240px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            margin-bottom: 10px;
+        }
     </style>
     <script>
-        function openFileSelector() {
-            document.getElementById('file').click();
+        function startCamera() {
+            const video = document.getElementById('video');
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error("Error accessing camera: ", error);
+            });
         }
+
+        window.onload = function() {
+            startCamera(); 
+        };
     </script>
 </head>
 <body>
     <div class="form-container">
-        <h1>Image Processing</h1>
+        <h1>Face Authentication</h1>
         <form action="/process_image" method="post" enctype="multipart/form-data" id="imageForm">
+            <video id="video" autoplay></video>
+
             <input type="file" name="file" id="file" accept="image/*" style="display: none;" onchange="document.getElementById('uploadBtn').innerHTML = 'File Selected';">
             <br>
-    
-            <input type="radio" name="capture_option" value="upload" checked>
-            <label for="upload_option" id="uploadBtn" onclick="openFileSelector()">Upload Image</label>
-    
-            <input type="radio" name="capture_option" value="camera">
-            <label for="camera_option">Capture</label>
+
+            <input type="radio" name="capture_option" value="camera" checked hidden>
+            <label for="camera_option" hidden>Capture</label>
             <br>
-    
-            <button type="submit">Process Image</button>
+
+            <button type="submit">Verify</button>
         </form>
     </div>
 </body>
