@@ -164,4 +164,4 @@ if __name__ == '__main__':
     # Uncomment the line below to process the dataset (only needed once)
     # process_dataset(dataset_folder)
 
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
